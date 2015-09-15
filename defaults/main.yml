@@ -101,17 +101,22 @@ suricata_outputs:
     type: file  #file|syslog|unix_dgram|unix_stream
     filename: eve.json
     types:
-      - name: "alert"
-      - name: "http:"
+      - name: alert
+      - name: http
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
         extended: "yes"  # enable this for extended logging information
-      - name: "dns"
-      - name: "tls:"
+      - name: dns
+      - name: tls
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
         extended: "yes"  # enable this for extended logging information
-      - name: "files:"
-        force_magic: "no"  # force logging magic on all logged files
-        force_md5: "no"  # force logging of md5 checksums
-#            - name: "drop"
-      - name: "ssh"
+      - name: files
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
+        force_magic: "yes"  # force logging magic on all logged files
+        force_md5: "yes"  # force logging of md5 checksums
+#      - name: "drop"
+      - name: ssh
+      - name: smtp
+      - name: flow
   - name: unified2-alert
     enabled: "yes"
     filename: unified2.alert

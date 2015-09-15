@@ -147,7 +147,15 @@ outputs:
 {%     if output.types is defined %}
       types:
 {%       for type in output.types %}
+{%         if type.config_addl is defined and type.config_addl %}
+        - {{ type.name }}:
+{%         endif %}
+{%         if type.config_addl is defined and not type.config_addl %}
         - {{ type.name }}
+{%         endif %}
+{%         if type.config_addl is not defined %}
+        - {{ type.name }}
+{%         endif %}
 {%         if type.extended is defined %}
           extended: {{ type.extended }}
 {%         endif %}
