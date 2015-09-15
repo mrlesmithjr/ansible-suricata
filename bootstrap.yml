@@ -51,7 +51,9 @@
       when: install_galaxy_roles is defined and install_galaxy_roles
 
     - name: ensuring group_vars and host_vars exists
-      file: path=./{{ item }} state=directory
+      file: path={{ item }} state=directory
+      delegate_to: localhost
+      sudo: false
       with_items:
         - group_vars
         - host_vars
