@@ -93,95 +93,167 @@ suricata_log_dir: /var/log/suricata/
 suricata_oinkmaster_rules_url: http://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
 suricata_outputs:
   - name: fast
-    enabled: "yes"
-    filename: fast.log
-    append: "yes"
+    settings:
+      - var: enabled
+        val: "yes"
+      - var: filename
+        val: fast.log
+      - var: append
+        val: "yes"
   - name: eve-log
-    enabled: "yes"
-    type: file  #file|syslog|unix_dgram|unix_stream
-    filename: eve.json
-    types:
-      - name: alert
-      - name: http
-        config_addl: true  #defines if additional parameters are to be defined....required for template check
-        extended: "yes"  # enable this for extended logging information
-      - name: dns
-      - name: tls
-        config_addl: true  #defines if additional parameters are to be defined....required for template check
-        extended: "yes"  # enable this for extended logging information
-      - name: files
-        config_addl: true  #defines if additional parameters are to be defined....required for template check
-        force_magic: "yes"  # force logging magic on all logged files
-        force_md5: "yes"  # force logging of md5 checksums
-#      - name: "drop"
-      - name: ssh
-      - name: smtp
-      - name: flow
+    settings:
+      - var: enabled
+        val: "yes"
+      - var: type
+        val: file  #file|syslog|unix_dgram|unix_stream
+      - var: filename
+        val: eve.json
+      - var: types
+        settings:
+          - name: alert
+          - name: http
+            settings:
+              - var: extended
+                val: "yes"  # enable this for extended logging information
+          - name: dns
+          - name: tls
+            settings:
+              - var: extended
+                val: "yes"  # enable this for extended logging information
+          - name: files
+            settings:
+              - var: force_magic
+                val: "yes"  # force logging magic on all logged files
+              - var: force_md5
+                val: "yes"  # force logging of md5 checksums
+    #      - name: "drop"
+          - name: ssh
+          - name: smtp
+          - name: flow
   - name: unified2-alert
-    enabled: "yes"
-    filename: unified2.alert
-    limit: 32mb  # File size limit.  Can be specified in kb, mb, gb.
-    xff:
+    settings:
+      - var: enabled
+        val: "yes"
+      - var: filename
+        val: unified2.alert
+      - var: limit
+        val: 32mb  # File size limit.  Can be specified in kb, mb, gb.
+      - var: xff
+        settings:
+          - var: enabled
+            val: "no"
+          - var: mode
+            val: extra-data
+          - var: header
+            val: X-Forwarded-For
+  - name: http-log
+    settings:
+      - var: enabled
+        val: "yes"
+      - var: filename
+        val: http.log
+      - var: append
+        val: "yes"
+  - name: tls-log
+    settings:
       - var: enabled
         val: "no"
-      - var: mode
-        val: extra-data
-      - var: header
-        val: X-Forwarded-For
-  - name: http-log
-    enabled: "yes"
-    filename: http.log
-    append: "yes"
-  - name: tls-log
-    enabled: "no"
-    filename: tls.log
-    append: "yes"
-    certs_log_dir: certs
+      - var: filename
+        val: tls.log
+      - var: append
+        val: "yes"
+      - var: certs_log_dir
+        val: certs
   - name: dns-log
-    enabled: "no"
-    filename: dns.log
-    append: "yes"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: filename
+        val: dns.log
+      - var: append
+        val: "yes"
   - name: pcap-info
-    enabled: "no"
+    settings:
+      - var: enabled
+        val: "no"
   - name: pcap-log
-    enabled: "no"
-    filename: log.pcap
-    limit: 1000mb
-    max_files: 2000
-    mode: normal  # normal or sguil
-    use_stream_depth: "no"  #If set to "yes" packets seen after reaching stream inspection depth are ignored. "no" logs all packets
+    settings:
+      - var: enabled
+        val: "no"
+      - var: filename
+        val: log.pcap
+      - var: limit
+        val: 1000mb
+      - var: max_files
+        val: 2000
+      - var: mode
+        val: normal  # normal or sguil
+      - var: use_stream_depth
+        val: "no"  #If set to "yes" packets seen after reaching stream inspection depth are ignored. "no" logs all packets
   - name: alert-debug
-    enabled: "no"
-    filename: alert-debug.log
-    append: "yes"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: filename
+        val: alert-debug.log
+      - var: append
+        val: "yes"
   - name: alert-prelude
-    enabled: "no"
-    profile: suricata
-    log_packet_content: "no"
-    log_packet_header: "yes"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: profile
+        val: suricata
+      - var: log_packet_content
+        val: "no"
+      - var: log_packet_header
+        val: "yes"
   - name: stats
-    enabled: "yes"
-    filename: stats.log
-    interval: 8
+    settings:
+      - var: enabled
+        val: "yes"
+      - var: filename
+        val: stats.log
+      - var: interval
+        val: 8
   - name: syslog
-    enabled: "no"
-    facility: local5
-    level: Info  # possible levels: Emergency, Alert, Critical, Error, Warning, Notice, Info, Debug
+    settings:
+      - var: enabled
+        val: "no"
+      - var: facility
+        val: local5
+      - var: level
+        val: Info  # possible levels: Emergency, Alert, Critical, Error, Warning, Notice, Info, Debug
   - name: drop
-    enabled: "no"
-    filename: drop.log
-    append: "yes"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: filename
+        val: drop.log
+      - var: append
+        val: "yes"
   - name: file-store
-    enabled: "no"
-    log_dir: files
-    force_magic: "no"
-    force_md5: "no"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: log_dir
+        val: files
+      - var: force_magic
+        val: "no"
+      - var: force_md5
+        val: "no"
   - name: file-log
-    enabled: "no"
-    filename: files-json.log
-    append: "yes"
-    force_magic: "no"
-    force_md5: "no"
+    settings:
+      - var: enabled
+        val: "no"
+      - var: filename
+        val: files-json.log
+      - var: append
+        val: "yes"
+      - var: force_magic
+        val: "no"
+      - var: force_md5
+        val: "no"
 suricata_pfring_interfaces:
   - int: eth0
     threads: 1

@@ -89,81 +89,37 @@ unix-command:
 {% if suricata_outputs is defined and (suricata_config_outputs is defined and suricata_config_outputs) %}
 outputs:
 {%   for output in suricata_outputs %}
+{%     if output.settings is not defined %}
+  - {{ output.name }}
+{%     endif %}
+{%     if output.settings is defined %}
   - {{ output.name }}:
-{%     if output.enabled is defined %}
-      enabled: {{ output.enabled }}
-{%     endif %}
-{%     if output.profile is defined %}
-      profile: {{ output.profile }}
-{%     endif %}
-{%     if output.log_packet_content is defined %}
-      log-packet-content: {{ output.log_packet_content }}
-{%     endif %}
-{%     if output.log_packet_header is defined %}
-      log-packet-header: {{ output.log_packet_header }}
-{%     endif %}
-{%     if output.interval is defined %}
-      interval: {{ output.interval }}
-{%     endif %}
-{%     if output.facility is defined %}
-      facility: {{ output.facility }}
-{%     endif %}
-{%     if output.level is defined %}
-      level: {{ output.level }}
-{%     endif %}
-{%     if output.log_dir is defined %}
-      log-dir: {{ output.log_dir }}
-{%     endif %}
-{%     if output.filename is defined %}
-      filename: {{ output.filename }}
-{%     endif %}
-{%     if output.limit is defined %}
-      limit: {{ output.limit }}
-{%     endif %}
-{%     if output.max_files is defined %}
-      max-files: {{ output.max_files }}
-{%     endif %}
-{%     if output.mode is defined %}
-      mode: {{ output.mode }}
-{%     endif %}
-{%     if output.use_stream_depth is defined %}
-      use-stream-depth: {{ output.use_stream_depth }}
-{%     endif %}
-{%     if output.xff is defined %}
-      xff:
-{%       for xff_var in output.xff %}
-        {{ xff_var.var }}: {{ xff_var.val }}
-{%       endfor %}
-{%     endif %}
-{%     if output.append is defined %}
-      append: {{ output.append }}
-{%     endif %}
-{%     if output.certs_log_dir is defined %}
-      certs-log-dir: {{ output.certs_log_dir }}
-{%     endif %}
-{%     if output.type is defined %}
-      type: {{ output.type }}
-{%     endif %}
-{%     if output.types is defined %}
-      types:
-{%       for type in output.types %}
-{%         if type.config_addl is defined and type.config_addl %}
-        - {{ type.name }}:
+{%       for setting in output.settings %}
+{%         if setting.settings is not defined %}
+      {{ setting.var }}: {{ setting.val }}
 {%         endif %}
-{%         if type.config_addl is defined and not type.config_addl %}
-        - {{ type.name }}
-{%         endif %}
-{%         if type.config_addl is not defined %}
-        - {{ type.name }}
-{%         endif %}
-{%         if type.extended is defined %}
-          extended: {{ type.extended }}
-{%         endif %}
-{%         if type.force_magic is defined %}
-          force-magic: {{ type.force_magic }}
-{%         endif %}
-{%         if type.force_md5 is defined %}
-          force-md5: {{ type.force_md5 }}
+{%         if setting.settings is defined %}
+{%           for addl_setting in setting.settings %}
+{%             if addl_setting.name is defined %}
+{%               for addl_addl_setting in addl_setting.name %}
+{%                 if addl_addl_setting.settings is not defined %}
+      {{ addl_addl_setting.name }}
+{%                 endif %}
+{%                 if addl_addl_setting.settings is defined %}
+      {{ addl_addl_setting.name }}:
+{%                   for addl_addl_setting_var in addl_addl_setting.settings %}
+        {{ addl_addl_setting_var.var }}: {{ addl_addl_setting_var.val }}
+{%                   endfor %}
+{%                 endif %}
+{%               endfor %}
+{%             endif %}
+{%             if addl_setting.settings is defined %}
+{%               for addl_addl_setting in addl_setting.settings %}
+        {{ addl_setting.var }}:
+          {{ addl_addl_setting.var }}: {{ addl_addl_setting.val }}
+{%               endfor %}
+{%             endif %}
+{%           endfor %}
 {%         endif %}
 {%       endfor %}
 {%     endif %}
