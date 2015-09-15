@@ -1,10 +1,10 @@
 ---
 - name: configuring suricata
-  template: src=templates/etc/suricata/suricata.yaml.j2 dest=/etc/suricata/suricata.yaml
+  template: src=etc/suricata/suricata.yaml.j2 dest=/etc/suricata/suricata.yaml
   notify: restart suricata
 
 - name: configuring oinkmaster
-  template: src=templates/etc/oinkmaster.conf.j2 dest=/etc/oinkmaster.conf
+  template: src=etc/oinkmaster.conf.j2 dest=/etc/oinkmaster.conf
 
 - name: configuring oinkmaster cron job
   cron: name="oinkmaster rules update" special_time=daily user="root" job="/usr/sbin/oinkmaster -C /etc/oinkmaster.conf -o {{ suricata_default_rule_path }}" cron_file=oinkmaster_rule_updates
