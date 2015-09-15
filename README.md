@@ -275,6 +275,20 @@ Vagrant testing
 
 Included is a Vagrantfile in order to test using Vagrant. Adjust node settings in nodes.yml if required. http://everythingshouldbevirtual.com/learning-vagrant-and-ansible-provisioning
 
+###### suricata.yml (change config_suricata: true to actually configure suricata)
+
+````
+---
+- hosts: all
+  remote_user: vagrant
+  sudo: true
+  vars:
+    - config_suricata: false
+  roles:
+    - { role: mrlesmithjr.suricata }
+````
+###### To spin up Vagrant node(s)
+
 ````
 vagrant up
 vagrant ssh
