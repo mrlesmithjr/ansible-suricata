@@ -50,6 +50,12 @@
       with_items: galaxy_roles
       when: install_galaxy_roles is defined and install_galaxy_roles
 
+    - name: ensuring group_vars and host_vars exists
+      file: path=./{{ item }} state=directory
+      with_items:
+        - group_vars
+        - host_vars
+
     - name: ensuring host file exists in host_vars
       stat: path=./host_vars/{{ inventory_hostname }}
       delegate_to: localhost
