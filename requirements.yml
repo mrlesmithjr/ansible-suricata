@@ -1,0 +1,3 @@
+---
+- src: mrlesmithjr.suricata
+- src: https://github.com/mrlesmithjr/ansible-suricata.git
