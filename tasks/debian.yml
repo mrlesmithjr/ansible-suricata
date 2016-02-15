@@ -9,6 +9,7 @@
   apt_repository:
     repo: "{{ suricata_ubuntu_ppa }}"
     state: present
+  when: ansible_distribution == "Ubuntu"
 
 - name: installing suricata and tools
   apt:

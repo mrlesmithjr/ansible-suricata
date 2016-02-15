@@ -85,13 +85,14 @@ galaxy_info:
   #  - maverick
   #  - natty
   #  - oneiric
-  #  - precise
+    - precise
   #  - quantal
   #  - raring
   #  - saucy
     - trusty
   #  - utopic
-  #  - vivid
+    - vivid
+    - wily
   #- name: SLES
   #  versions:
   #  - all
