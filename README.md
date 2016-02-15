@@ -8,6 +8,13 @@ Requirements
 
 None
 
+Vagrant
+-------
+Spin up Vagrant environment
+````
+vagrant up
+````
+
 Role Variables
 --------------
 ````
@@ -216,7 +223,7 @@ suricata_rules:
   - emerging-ftp.rules
   - emerging-games.rules
   - emerging-icmp_info.rules
-#        - emerging-icmp.rules
+#  - emerging-icmp.rules
   - emerging-imap.rules
   - emerging-inappropriate.rules
   - emerging-malware.rules
@@ -264,34 +271,23 @@ None
 Example Playbook
 ----------------
 
-    - hosts: all
-      roles:
-         - { role: mrlesmithjr.suricata }
-
-Vagrant testing
----------------
-
-Included is a Vagrantfile in order to test using Vagrant. Adjust node settings in nodes.yml if required. http://everythingshouldbevirtual.com/learning-vagrant-and-ansible-provisioning
-
-###### suricata.yml (change config_suricata: true to actually configure suricata)
-
+#### GitHub
 ````
----
 - hosts: all
-  remote_user: vagrant
-  sudo: true
+  become: true
   vars:
-    - config_suricata: false
   roles:
-    - { role: mrlesmithjr.suricata }
+    - role: ansible-suricata
+  tasks:
 ````
-###### To spin up Vagrant node(s)
-
+#### Galaxy
 ````
-vagrant up
-vagrant ssh
-cd /vagrant
-ansible-playbook -i hosts suricata.yml
+- hosts: all
+  become: true
+  vars:
+  roles:
+    - role: mrlesmithjr.suricata
+  tasks:
 ````
 
 License
