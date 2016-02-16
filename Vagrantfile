@@ -7,7 +7,7 @@
 # you're doing.
 Vagrant.configure(2) do |config|
   config.vm.define "suricata" do |suricata|
-    suricata.vm.box = "mrlesmithjr/trusty64"
+    suricata.vm.box = "ubuntu/trusty64"
     suricata.vm.hostname = "suricata"
 
     suricata.vm.network :private_network, ip: "192.168.202.201"
