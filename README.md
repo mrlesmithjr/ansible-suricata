@@ -49,6 +49,7 @@ suricata_af_packet_interfaces:
     disable_promisc: "no"  # Set to yes to disable promiscuous mode
     use_nmap: "yes"
 suricata_classification_file: /etc/suricata/classification.config
+suricata_config_file: /etc/suricata/suricata.yaml
 suricata_config_outputs: true
 suricata_default_rule_path: /etc/suricata/rules
 suricata_flow_timeouts:
@@ -80,6 +81,7 @@ suricata_host_mode: auto  #defines surica operating mode...Options are auto, rou
 #    suricata_include_files:  #Files included here will be handled as if they were inlined in the configuration file.
 #        - include1.yaml
 #        - include2.yaml
+suricata_iface: "{{ ansible_default_ipv4.interface }}"  #Interface to listen on (for pcap mode)
 suricata_interfaces:  #define the interfaces on your suricata host and define if offloading should be disabled.
   - int: eth0
     disable_offloading: false
@@ -109,7 +111,9 @@ suricata_interfaces:  #define the interfaces on your suricata host and define if
       - tx
       - txvlan
       - ufo
+suricata_listen_mode: af-packet  #pcap, nfqueue or af-packet
 suricata_log_dir: /var/log/suricata/
+suricata_nfqueue: 0  #Queue number to listen on (for nfqueue mode)
 suricata_oinkmaster_rules_url: http://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
 suricata_outputs:
   - name: fast
@@ -121,17 +125,22 @@ suricata_outputs:
     type: file  #file|syslog|unix_dgram|unix_stream
     filename: eve.json
     types:
-      - name: "alert"
-      - name: "http:"
+      - name: alert
+      - name: http
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
         extended: "yes"  # enable this for extended logging information
-      - name: "dns"
-      - name: "tls:"
+      - name: dns
+      - name: tls
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
         extended: "yes"  # enable this for extended logging information
-      - name: "files:"
-        force_magic: "no"  # force logging magic on all logged files
-        force_md5: "no"  # force logging of md5 checksums
-#            - name: "drop"
-      - name: "ssh"
+      - name: files
+        config_addl: true  #defines if additional parameters are to be defined....required for template check
+        force_magic: "yes"  # force logging magic on all logged files
+        force_md5: "yes"  # force logging of md5 checksums
+#      - name: "drop"
+      - name: ssh
+      - name: smtp
+      - name: flow
   - name: unified2-alert
     enabled: "yes"
     filename: unified2.alert
@@ -223,7 +232,7 @@ suricata_rules:
   - emerging-ftp.rules
   - emerging-games.rules
   - emerging-icmp_info.rules
-#  - emerging-icmp.rules
+#        - emerging-icmp.rules
   - emerging-imap.rules
   - emerging-inappropriate.rules
   - emerging-malware.rules
@@ -256,11 +265,11 @@ suricata_rules:
   - smtp-events.rules    # available in suricata sources under rules dir
   - dns-events.rules     # available in suricata sources under rules dir
   - tls-events.rules     # available in suricata sources under rules dir
+suricata_run_initd: 'yes'  #set to yes to start the server in the init.d script
 suricata_ubuntu_ppa: ppa:oisf/suricata-stable  #Options are ppa:oisf/suricata-stable, ppa:oisf/suricata-beta or ppa:oisf/suricata-daily
 suricata_unix_command:
   enabled: "no"
 #        filename: custom.socket
-
 ````
 
 Dependencies
