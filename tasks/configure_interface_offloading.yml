@@ -1,10 +1,10 @@
 ---
-- name: ensuring scripts dir exists
+- name: configure_interface_offloading | ensuring scripts dir exists
   file:
     path: "{{ scripts_dir }}"
     state: directory
 
-- name: configuring interface offload settings script
+- name: configure_interface_offloading | configuring interface offload settings script
   template:
     src: opt/scripts/disable_interface_offloads.sh.j2
     dest: "{{ scripts_dir }}/disable_interface_offloads.sh"
@@ -13,10 +13,10 @@
     mode: 0774
   when: suricata_interfaces is defined
 
-- name: disabling interface offload settings (if defined)
+- name: configure_interface_offloading | disabling interface offload settings (if defined)
   shell: path="{{ scripts_dir }}/disable_interface_offloads.sh"
 
-- name: configuring interface offload settings cron job
+- name: configure_interface_offloading | configuring interface offload settings cron job
   cron:
     name: "disable interface offloads"
     special_time: reboot
