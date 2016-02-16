@@ -1,16 +1,31 @@
 ---
-- name: configuring suricata
+- name: configure_suricata | configuring suricata service
   template:
-    src: etc/suricata/suricata.yaml.j2
-    dest: /etc/suricata/suricata.yaml
+    src: "etc/default/suricata.j2"
+    dest: "/etc/default/suricata"
+    owner: root
+    group: root
+    mode: 0644
   notify: restart suricata
 
-- name: configuring oinkmaster
+- name: configure_suricata | configuring suricata
   template:
-    src: etc/oinkmaster.conf.j2
-    dest: /etc/oinkmaster.conf
+    src: "etc/suricata/suricata.yaml.j2"
+    dest: "{{ suricata_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart suricata
 
-- name: configuring oinkmaster cron job
+- name: configure_suricata | configuring oinkmaster
+  template:
+    src: "etc/oinkmaster.conf.j2"
+    dest: "/etc/oinkmaster.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: configure_suricata | configuring oinkmaster cron job
   cron:
     name: "oinkmaster rules update"
     special_time: daily
