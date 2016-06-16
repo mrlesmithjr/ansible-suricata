@@ -85,13 +85,14 @@ galaxy_info:
   #  - maverick
   #  - natty
   #  - oneiric
-  #  - precise
+    - precise
   #  - quantal
   #  - raring
   #  - saucy
     - trusty
   #  - utopic
-  #  - vivid
+    - vivid
+    - wily
   #- name: SLES
   #  versions:
   #  - all
@@ -105,11 +106,11 @@ galaxy_info:
   #  versions:
   #  - all
   #  - any
-  #- name: Debian
-  #  versions:
+  - name: Debian
+    versions:
   #  - all
   #  - etch
-  #  - jessie
+    - jessie
   #  - lenny
   #  - squeeze
   #  - wheezy

@@ -1,14 +1,20 @@
 ---
-- name: installing additional packages in support of suricata
-  apt: name={{ item }}
+- name: debian | installing additional packages in support of suricata
+  apt:
+    name: "{{ item }}"
   with_items:
     - ethtool
 
-- name: adding suricata PPA repo
-  apt_repository: repo={{ suricata_ubuntu_ppa }} state=present
+- name: debian | adding suricata PPA repo
+  apt_repository:
+    repo: "{{ suricata_ubuntu_ppa }}"
+    state: present
+  when: ansible_distribution == "Ubuntu"
 
-- name: installing suricata and tools
-  apt: name={{ item }} state=present
+- name: debian | installing suricata and tools
+  apt:
+    name: "{{ item }}"
+    state: present
   with_items:
     - suricata
     - oinkmaster

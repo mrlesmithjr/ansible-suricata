@@ -29,6 +29,7 @@ suricata_af_packet_interfaces:
     disable_promisc: "no"  # Set to yes to disable promiscuous mode
     use_nmap: "yes"
 suricata_classification_file: /etc/suricata/classification.config
+suricata_config_file: /etc/suricata/suricata.yaml
 suricata_config_outputs: true
 suricata_default_rule_path: /etc/suricata/rules
 suricata_flow_timeouts:
@@ -60,6 +61,7 @@ suricata_host_mode: auto  #defines surica operating mode...Options are auto, rou
 #    suricata_include_files:  #Files included here will be handled as if they were inlined in the configuration file.
 #        - include1.yaml
 #        - include2.yaml
+suricata_iface: "{{ ansible_default_ipv4.interface }}"  #Interface to listen on (for pcap mode)
 suricata_interfaces:  #define the interfaces on your suricata host and define if offloading should be disabled.
   - int: eth0
     disable_offloading: false
@@ -89,7 +91,9 @@ suricata_interfaces:  #define the interfaces on your suricata host and define if
       - tx
       - txvlan
       - ufo
+suricata_listen_mode: af-packet  #pcap, nfqueue or af-packet
 suricata_log_dir: /var/log/suricata/
+suricata_nfqueue: 0  #Queue number to listen on (for nfqueue mode)
 suricata_oinkmaster_rules_url: http://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
 suricata_outputs:
   - name: fast
@@ -313,6 +317,18 @@ suricata_rules:
   - smtp-events.rules    # available in suricata sources under rules dir
   - dns-events.rules     # available in suricata sources under rules dir
   - tls-events.rules     # available in suricata sources under rules dir
+suricata_run_initd: 'yes'  #set to yes to start the server in the init.d script
+suricata_suppress_list:  #Defines a list of alerts to suppress
+  - gen_id: 1
+    sig_id: 2210020
+#    track: by_src  #options are: by_src|by_dst
+#    ip_addresses:  #define IP addressORsubnet if setting up track by
+#      - 172.16.0.0/16
+#      - 192.168.1.0/24
+  - gen_id: 1
+    sig_id: 2210021
+  - gen_id: 1
+    sig_id: 2210029
 suricata_ubuntu_ppa: ppa:oisf/suricata-stable  #Options are ppa:oisf/suricata-stable, ppa:oisf/suricata-beta or ppa:oisf/suricata-daily
 suricata_unix_command:
   enabled: "no"
