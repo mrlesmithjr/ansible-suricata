@@ -13,8 +13,14 @@
     mode: 0774
   when: suricata_interfaces is defined
 
+- name: check network card checksum offloading state
+  command: "ethtool --show-offload {{ disable_offloading_check_if | default('eth0') }}"
+  register: ethtool
+  changed_when: false
+  
 - name: configure_interface_offloading | disabling interface offload settings (if defined)
   shell: path="{{ scripts_dir }}/disable_interface_offloads.sh"
+  when: "ethtool.stdout is defined and '-checksumming: on' in ethtool.stdout"
 
 - name: configure_interface_offloading | configuring interface offload settings cron job
   cron:
